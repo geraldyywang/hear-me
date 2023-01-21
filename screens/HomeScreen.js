@@ -19,32 +19,34 @@ export default function HomeScreen({ navigation }) {
 
   const [listState, setListState] = useState(messages);
 
-  useEffect(() => {
-    async function fetchData() {
-      return (querySnapshot = await getDocs(collection(db, "announcements")));
-    }
-
-    const querySnapshot = fetchData();
-    console.log(querySnapshot.docs[0].data());
-    const messages = querySnapshot.docs.map((document) => {
-      return {
-        id: document.data().announcement_timestamp,
-        text: document.data().announcement,
-        classification: document.data().announcement_type,
-      };
-    });
-    //addElementToList(messages.id, messages.classification, messages.text);
-    console.log(messages);
-    // setListState(messages);
-    return () => {};
-  });
-
-  const addElementToList = (i, c, t) => {
-    // setListState((prevValue) => {
-    //   let tempArray = [...prevValue, { id: i, text: t, classification: c }];
-    //   return tempArray;
-    // });
+  const getAnnouncements = () => {
+    const announcementColRef = collection(db, "announcements");
+    getDocs(announcementColRef)
+      .then((response) => {
+        const announcements = response.docs.map((document) => {
+          return {
+            id: document.data().announcement_timestamp,
+            text: document.data().announcement,
+            classification: document.data().announcement_type,
+          };
+        });
+        console.log(announcements);
+        setListState(announcements);
+      })
+      .catch((err) => console.log(err));
   };
+
+  useEffect(() => {
+    getAnnouncements();
+    return () => {};
+  }, []);
+
+  // const addElementToList = (i, c, t) => {
+  //   // setListState((prevValue) => {
+  //   //   let tempArray = [...prevValue, { id: i, text: t, classification: c }];
+  //   //   return tempArray;
+  //   // });
+  // };
 
   const renderCard = ({ item }) => {
     const { text, classification } = item;
@@ -65,11 +67,11 @@ export default function HomeScreen({ navigation }) {
       </Appbar.Header>
 
       <View style={styles.content}>
-        {/* <FlatList
+        <FlatList
           keyExtractor={(item) => item.id}
           data={listState}
           renderItem={renderCard}
-        /> */}
+        />
       </View>
 
       <View style={styles.footer}>
