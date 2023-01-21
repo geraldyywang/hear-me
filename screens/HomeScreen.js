@@ -6,16 +6,16 @@ import FeatherIcon from "react-native-vector-icons/Feather";
 import FAIcon from "react-native-vector-icons/FontAwesome";
 import Card from "../components/Card";
 import uuid from "react-native-uuid";
+import stopData from "../stops.json";
 
 import { train2ColRef, train1ColRef } from "../firebaseConfig";
 
 import { onSnapshot } from "firebase/firestore";
-
 export default function HomeScreen({ route, navigation }) {
   const [train, setTrain] = useState(route.params?.train || "train_1");
 
   const [listState, setListState] = useState([]);
-
+  const [isStopping, setIsStopping] = useState("false");
   const [notifications, setNotifications] = useState(true);
   // useEffect(() => {
   //   setTrain(route.params?.train || "train_1");
@@ -51,7 +51,11 @@ export default function HomeScreen({ route, navigation }) {
         setListState(announcements);
       }
     );
+    const interval = setInterval(() => {
+      // if(isStopping && notifications)
+    }, 10000);
     return () => {
+      clearInterval(interval);
       unsubscribe();
     };
   }, []);
@@ -73,7 +77,7 @@ export default function HomeScreen({ route, navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <Appbar.Header style={styles.header}>
-        <Appbar.Content title="HearMe" />
+        <Appbar.Content title="Hear.Me" />
         <Appbar.Action
           icon="qrcode"
           onPress={() => navigation.navigate({ name: "init", merge: true })}
@@ -89,6 +93,7 @@ export default function HomeScreen({ route, navigation }) {
           keyExtractor={(item) => item.id}
           data={listState}
           renderItem={renderCard}
+          inverted
         />
       </View>
 
@@ -98,11 +103,20 @@ export default function HomeScreen({ route, navigation }) {
             style={styles.stopButtonStyle}
             icon={<FAIcon name="hand-stop-o" size={15} color="white" />}
             title="  Set Stop"
+            onPress={() => {
+              setIsStopping((prevValue) => !prevValue);
+            }}
           />
           <Button
             icon={<FAIcon name="paragraph" size={15} color="white" />}
             title="  Summarize"
-            onPress={() => navigation.navigate("summary")}
+            onPress={() =>
+              navigation.navigate("summary", {
+                messages: listState
+                  .map((announcement) => announcement.announcement)
+                  .join(". "),
+              })
+            }
           />
         </View>
       </View>
