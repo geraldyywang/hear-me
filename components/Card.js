@@ -1,18 +1,25 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 
-export default function Card(props) {
+export default function Card({ text, classification }) {
   let color = "#fff";
 
-  if (props.keyword == "emergency") {
+  if (classification == "Assistance") {
+    // emergency
     color = "#FF0000";
-  } else if (props.keyword == "") {
+  } else if (classification == "Delay") {
+    // delays
+    color = "#FFA500";
+  } else if (classification == "Next Stop") {
+    // stop
+    color = "#0DFF00";
   }
 
   return (
     <View style={styles.card}>
       <View style={styles.cardContent}>
-        <Text>{props.message}</Text>
+        <View style={styles.cardBlock} backgroundColor={color}></View>
+        <Text>{text}</Text>
       </View>
     </View>
   );
@@ -33,5 +40,9 @@ const styles = StyleSheet.create({
   cardContent: {
     marginHorizontal: 10,
     marginVertical: 10,
+  },
+  cardBlock: {
+    borderRadius: 6,
+    paddingBottom: 10,
   },
 });
