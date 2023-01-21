@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, SafeAreaView, FlatList } from "react-native";
 import { Appbar } from "react-native-paper";
 import { Button } from "react-native-elements";
-import Icon from "react-native-vector-icons/FontAwesome";
+import FeatherIcon from "react-native-vector-icons/Feather";
+import FAIcon from "react-native-vector-icons/FontAwesome";
 import Card from "../components/Card";
 import uuid from "react-native-uuid";
 
@@ -14,6 +15,8 @@ export default function HomeScreen({ route, navigation }) {
   const [train, setTrain] = useState(route.params?.train || "train_1");
 
   const [listState, setListState] = useState([]);
+
+  const [notifications, setNotifications] = useState(true);
   // useEffect(() => {
   //   setTrain(route.params?.train || "train_1");
   // }, [route.params?.train]);
@@ -75,7 +78,10 @@ export default function HomeScreen({ route, navigation }) {
           icon="qrcode"
           onPress={() => navigation.navigate({ name: "init", merge: true })}
         />
-        <Appbar.Action icon="bell" onPress={() => {}} />
+        <Appbar.Action
+          icon={notifications ? "bell" : "bell-off"}
+          onPress={() => setNotifications(!notifications)}
+        />
       </Appbar.Header>
 
       <View style={styles.content}>
@@ -90,11 +96,11 @@ export default function HomeScreen({ route, navigation }) {
         <View style={styles.buttonStyle}>
           <Button
             style={styles.stopButtonStyle}
-            icon={<Icon name="hand-stop-o" size={15} color="white" />}
+            icon={<FAIcon name="hand-stop-o" size={15} color="white" />}
             title="  Set Stop"
           />
           <Button
-            icon={<Icon name="paragraph" size={15} color="white" />}
+            icon={<FAIcon name="paragraph" size={15} color="white" />}
             title="  Summarize"
             onPress={() => navigation.navigate("summary")}
           />
