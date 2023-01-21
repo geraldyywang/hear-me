@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, collection } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA33hMVfCJgJN0gaTRWWl0hbH4auvXBmZk",
@@ -14,4 +14,7 @@ const firebaseConfig = {
 // For more information on how to access Firebase in your project,
 // see the Firebase documentation: https://firebase.google.com/docs/web/setup#access-firebase
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+const db = getFirestore(app);
+
+export const train1ColRef = collection(db, "train_1");
+export const train2ColRef = collection(db, "train_2");

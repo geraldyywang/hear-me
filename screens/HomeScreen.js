@@ -4,41 +4,51 @@ import { Appbar } from "react-native-paper";
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Card from "../components/Card";
+import uuid from "react-native-uuid";
 
-import { db } from "../firebaseConfig";
+import { train2ColRef, train1ColRef } from "../firebaseConfig";
 
-import { collection, getDocs } from "firebase/firestore";
+import { onSnapshot } from "firebase/firestore";
 
-export default function HomeScreen({ navigation }) {
-  let messages = [
-    { id: 1, text: "Message 1", classification: "Delay" },
-    { id: 2, text: "Message 2", classification: "Assistance" },
-    { id: 3, text: "Message 3", classification: "Next Stop" },
-    { id: 4, text: "Message 4", classification: 4 },
-  ];
+export default function HomeScreen({ route, navigation }) {
+  const { train } = route.params;
 
-  const [listState, setListState] = useState(messages);
+  const [listState, setListState] = useState([]);
 
-  const getAnnouncements = () => {
-    const announcementColRef = collection(db, "announcements");
-    getDocs(announcementColRef)
-      .then((response) => {
-        const announcements = response.docs.map((document) => {
+  // const getAnnouncements = () => {
+  //   const announcementColRef = collection(db, "announcements");
+  //   getDocs(announcementColRef)
+  //     .then((response) => {
+  //       const announcements = response.docs.map((document) => {
+  //         return {
+  //           id: document.data().announcement_timestamp,
+  //           text: document.data().announcement,
+  //           classification: document.data().announcement_type,
+  //         };
+  //       });
+  //       console.log(announcements);
+  //       setListState(announcements);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      train === "train_1" ? train1ColRef : train2ColRef,
+      (snapshot) => {
+        const announcements = snapshot.docs.map((document) => {
           return {
-            id: document.data().announcement_timestamp,
+            id: uuid.v4(),
             text: document.data().announcement,
             classification: document.data().announcement_type,
           };
         });
-        console.log(announcements);
         setListState(announcements);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  useEffect(() => {
-    getAnnouncements();
-    return () => {};
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   // const addElementToList = (i, c, t) => {
@@ -51,7 +61,7 @@ export default function HomeScreen({ navigation }) {
   const renderCard = ({ item }) => {
     const { text, classification } = item;
 
-    return <Card classification={classification} text={text} />;
+    return <Card key={item.id} classification={classification} text={text} />;
     //return <Text>Hi</Text>;
   };
 
@@ -77,8 +87,9 @@ export default function HomeScreen({ navigation }) {
       <View style={styles.footer}>
         <View style={styles.buttonStyle}>
           <Button
+            style={styles.stopButtonStyle}
             icon={<Icon name="hand-stop-o" size={15} color="white" />}
-            title="  Request Stop"
+            title="  Set Stop"
           />
           <Button
             icon={<Icon name="paragraph" size={15} color="white" />}
