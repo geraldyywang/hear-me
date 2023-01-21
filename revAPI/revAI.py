@@ -7,24 +7,43 @@ import firebase_admin
 from firebase_admin import firestore, credentials
 import datetime
 from co import categorize_string
+import math
+import pprint
 
 
 # Use a service account.
-cred = credentials.Certificate('hearmeAPIKey.json')
+cred = credentials.Certificate(
+    '/Users/aakash/Documents/Hacks/hear-me/APIKey/hearmeAPIKey.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
+
 
 def combineText(response):
     msg = ''
     for word in response['elements']:
         msg += word['value']
-        
+
     return msg
 
 
+def fethcAllText():
+    list_msgObj = []
+    docs = db.collection('announcements').get()
+    for doc in docs:
+        list_msgObj.append(doc.to_dict())
+
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(list_msgObj)
+    return list_msgObj
+
+
+fethcAllText()
+
+
 class MicrophoneStream(object):
-    
+
     """Opens a recording stream as a generator yielding the audio chunks."""
+
     def __init__(self, rate, chunk):
         self._rate = rate
         self._chunk = chunk
@@ -110,23 +129,23 @@ with MicrophoneStream(rate, chunk) as stream:
             res = json.loads(response)
             if res['type'] == 'final':
                 print(response)
-                
+
                 msg = combineText(res)
 
                 announcement_type = categorize_string(msg)
+                timestamp_obj = str(datetime.datetime.now().timestamp())
+                timestamp_msg = timestamp_obj.split('.')[0]
 
                 jsonObj = {
-                        "announcement_json": response,
-                        "announcement_type": announcement_type,
-                        "announcement_timestamp": str(datetime.datetime.now().timestamp())
-                    }
+                    "announcement": msg,
+                    "announcement_type": announcement_type,
+                    "announcement_timestamp": timestamp_msg
+                }
 
-                db.collection("announcements").document(str(datetime.datetime.now().timestamp())).set(jsonObj)
-                
+                db.collection("announcements").document(
+                    timestamp_msg).set(jsonObj)
 
     except KeyboardInterrupt:
         # Ends the websocket connection.
         streamclient.client.send("EOS")
         pass
-
-
