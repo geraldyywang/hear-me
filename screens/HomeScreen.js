@@ -11,10 +11,12 @@ import { train2ColRef, train1ColRef } from "../firebaseConfig";
 import { onSnapshot } from "firebase/firestore";
 
 export default function HomeScreen({ route, navigation }) {
-  const { train } = route.params;
+  const [train, setTrain] = useState(route.params?.train || "train_1");
 
   const [listState, setListState] = useState([]);
-
+  // useEffect(() => {
+  //   setTrain(route.params?.train || "train_1");
+  // }, [route.params?.train]);
   // const getAnnouncements = () => {
   //   const announcementColRef = collection(db, "announcements");
   //   getDocs(announcementColRef)
@@ -71,7 +73,7 @@ export default function HomeScreen({ route, navigation }) {
         <Appbar.Content title="HearMe" />
         <Appbar.Action
           icon="qrcode"
-          onPress={() => navigation.navigate("camera")}
+          onPress={() => navigation.navigate({ name: "init", merge: true })}
         />
         <Appbar.Action icon="bell" onPress={() => {}} />
       </Appbar.Header>

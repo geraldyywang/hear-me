@@ -6,7 +6,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function InitialScannerScreen({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(false);
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -18,7 +17,6 @@ export default function InitialScannerScreen({ navigation }) {
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
     // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     console.log(data);
     navigation.navigate("home", { train: data });
@@ -34,12 +32,9 @@ export default function InitialScannerScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        onBarCodeScanned={handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
-      {scanned && (
-        <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
-      )}
     </SafeAreaView>
   );
 }

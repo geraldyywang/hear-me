@@ -4,7 +4,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import HomeScreen from "./screens/HomeScreen";
-import CameraScreen from "./screens/CameraScreen";
 import SummaryScreen from "./screens/SummaryScreen";
 import InitialScannerScreen from "./screens/InitialScannerScreen";
 
@@ -13,11 +12,6 @@ const StackNavigator = createNativeStackNavigator();
 function Stack() {
   return (
     <StackNavigator.Navigator initialRouteName="init">
-      <StackNavigator.Screen
-        name="camera"
-        component={CameraScreen}
-        options={{ headerShown: false }}
-      />
       <StackNavigator.Screen
         name="home"
         component={HomeScreen}
