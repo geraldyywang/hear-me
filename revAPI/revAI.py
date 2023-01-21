@@ -10,7 +10,7 @@ from co import categorize_string
 
 
 # Use a service account.
-cred = credentials.Certificate('/Users/aakash/Documents/Hacks/hear-me/APIKey/hearmeAPIKey.json')
+cred = credentials.Certificate('hearmeAPIKey.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
