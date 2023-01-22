@@ -1,3 +1,5 @@
+#UofT Hacks X
+
 ## Inspiration
 We were inspired to create this project because of our own personal experiences with public transportation. As frequent users, we often missed important announcements or our stop due to unclear audio or distractions. This realization made us imagine how much more challenging this must be for deaf individuals who rely on visual cues to access the same information. This sparked the idea for our project - an application that uses QR codes to provide real-time transcription and categorization of the conductor's words to improve accessibility and inclusivity for deaf individuals on public transportation. We aim to bridge the communication gap and empower marginalized communities through this innovative solution.
 
