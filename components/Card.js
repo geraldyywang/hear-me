@@ -6,7 +6,7 @@ export default function Card({ text, classification }) {
 
   if (classification == "Assistance") {
     // emergency
-    color = "#FF0000";
+    color = "#f65151";
   } else if (classification == "Delay") {
     // delays
     color = "#FFA500";
@@ -17,9 +17,14 @@ export default function Card({ text, classification }) {
 
   return (
     <View style={styles.card}>
-      <View style={styles.cardContent}>
-        <View style={styles.cardBlock} backgroundColor={color}></View>
-        <Text>{text}</Text>
+      <View
+        style={{
+          ...styles.cardContent,
+          backgroundColor: color,
+        }}
+      >
+        {/* <View style={styles.cardBlock} backgroundColor={color}></View> */}
+        <Text style={{ fontSize: 16 }}>{text}</Text>
       </View>
     </View>
   );
@@ -38,8 +43,7 @@ const styles = StyleSheet.create({
     marginVertical: 6,
   },
   cardContent: {
-    marginHorizontal: 10,
-    marginVertical: 10,
+    padding: 20,
   },
   cardBlock: {
     borderRadius: 6,

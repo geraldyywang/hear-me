@@ -16,8 +16,9 @@ import {
   Switch,
   useTheme,
   Dialog,
+  IconButton,
 } from "react-native-paper";
-import { Button } from "react-native-elements";
+import { Button, Image } from "react-native-elements";
 import FAIcon from "react-native-vector-icons/FontAwesome";
 import Card from "../components/Card";
 import uuid from "react-native-uuid";
@@ -90,17 +91,49 @@ export default function HomeScreen({ route, navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Appbar.Header style={styles.header}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          padding: 10,
+          borderBottomColor: "#000",
+          borderBottomWidth: 1,
+          backgroundColor: "#FFF",
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Image
+            source={require("./logo.jpg")}
+            style={{ width: 40, height: 40, marginRight: 8 }}
+          />
+          <Text style={{ fontWeight: "bold", fontSize: 30 }}>Hear.Me</Text>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <IconButton
+            icon="qrcode"
+            onPress={() => navigation.navigate({ name: "init", merge: true })}
+          />
+          <IconButton
+            icon={notifications ? "bell" : "bell-off"}
+            onPress={() => setNotifications(!notifications)}
+          />
+        </View>
+      </View>
+
+      {/* <Appbar.Header style={styles.header}>
         <Appbar.Content title="Hear.Me" />
-        <Appbar.Action
-          icon="qrcode"
-          onPress={() => navigation.navigate({ name: "init", merge: true })}
-        />
+        <Appbar.Action />
         <Appbar.Action
           icon={notifications ? "bell" : "bell-off"}
           onPress={() => setNotifications(!notifications)}
         />
-      </Appbar.Header>
+      </Appbar.Header> */}
 
       <Provider>
         <View style={styles.content}>
@@ -116,37 +149,6 @@ export default function HomeScreen({ route, navigation }) {
             })}
             renderItem={renderCard}
           />
-          <FAB.Group
-            open={open}
-            visible
-            icon={open ? "minus" : "plus"}
-            style={{
-              position: "absolute",
-              right: 0,
-              bottom: 0,
-            }}
-            actions={[
-              {
-                icon: "hand-back-right",
-                label: stop == null ? "Set Stop" : stopData[train][stop],
-                color: stop == null ? theme.colors.primary : "#FF0000",
-                onPress: () => {
-                  setStopModalVisible((prevValue) => !prevValue);
-                },
-              },
-              {
-                icon: "format-list-text",
-                label: "Summarize",
-                onPress: () =>
-                  navigation.navigate("summary", {
-                    messages: listState
-                      .map((announcement) => announcement.announcement)
-                      .join(". "),
-                  }),
-              },
-            ]}
-            onStateChange={() => setOpen(!open)}
-          />
           <FAB
             icon="filter"
             label="Filters"
@@ -157,6 +159,19 @@ export default function HomeScreen({ route, navigation }) {
             }}
             onPress={() => {
               setFilterModalVisible(true);
+            }}
+          />
+          <FAB
+            label={stop == null ? "Set Stop" : stopData[train][stop]}
+            color={stop == null ? theme.colors.primary : "#FF0000"}
+            icon="hand-back-right"
+            style={{
+              position: "absolute",
+              right: 15,
+              bottom: 15,
+            }}
+            onPress={() => {
+              setStopModalVisible((prevValue) => !prevValue);
             }}
           />
           <Portal>
@@ -171,9 +186,9 @@ export default function HomeScreen({ route, navigation }) {
                 }, 1000);
               }}
             >
-              <Dialog.Title>Alert</Dialog.Title>
+              <Dialog.Title>Stop Reached</Dialog.Title>
               <Dialog.Content>
-                <Text variant="bodyMedium">This is simple dialog</Text>
+                <Text variant="bodyMedium">You have reached your stop! 🥳</Text>
               </Dialog.Content>
               <Dialog.Actions>
                 <Button
@@ -192,7 +207,12 @@ export default function HomeScreen({ route, navigation }) {
             <Modal
               visible={filterModalVisible}
               onDismiss={() => setFilterModalVisible((prevValue) => !prevValue)}
-              contentContainerStyle={{ backgroundColor: "white", padding: 20 }}
+              contentContainerStyle={{
+                backgroundColor: "white",
+                padding: 20,
+                margin: 20,
+                borderRadius: 10,
+              }}
             >
               <View style={styles.subcontainer}>
                 <Text>Next Stop Announcements</Text>
@@ -222,8 +242,22 @@ export default function HomeScreen({ route, navigation }) {
             <Modal
               visible={stopModalVisible}
               onDismiss={() => setStopModalVisible((prevValue) => !prevValue)}
-              contentContainerStyle={{ backgroundColor: "white", padding: 20 }}
+              contentContainerStyle={{
+                backgroundColor: "white",
+                padding: 20,
+                margin: 20,
+                borderRadius: 10,
+              }}
             >
+              <Text
+                style={{
+                  alignItems: "center",
+                  textAlign: "center",
+                  fontSize: 20,
+                }}
+              >
+                Pick a stop:
+              </Text>
               <Picker
                 selectedValue={stop}
                 onValueChange={(itemValue) => {
@@ -251,6 +285,7 @@ export default function HomeScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: "relative",
   },
   subcontainer: {
     flexDirection: "row",
