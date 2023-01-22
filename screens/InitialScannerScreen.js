@@ -17,8 +17,6 @@ export default function InitialScannerScreen({ navigation }) {
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
-    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    console.log(data);
     navigation.navigate("home", { train: data });
   };
 
