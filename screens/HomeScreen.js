@@ -72,7 +72,9 @@ export default function HomeScreen({ route, navigation }) {
   useEffect(() => {
     if (currentStop === stop) {
       console.log("you made it 🥳");
-      Vibration.vibrate([100, 100, 100], true);
+      if (notifications) {
+        Vibration.vibrate([100, 100, 100], true);
+      }
       setDialogVisible(true);
     }
 
