@@ -1,4 +1,4 @@
-#UofT Hacks X
+# Hear.Me
 
 ## Inspiration
 We were inspired to create this project because of our own personal experiences with public transportation. As frequent users, we often missed important announcements or our stop due to unclear audio or distractions. This realization made us imagine how much more challenging this must be for deaf individuals who rely on visual cues to access the same information. This sparked the idea for our project - an application that uses QR codes to provide real-time transcription and categorization of the conductor's words to improve accessibility and inclusivity for deaf individuals on public transportation. We aim to bridge the communication gap and empower marginalized communities through this innovative solution.
@@ -37,3 +37,5 @@ We also learned about the value of **exploring** existing concepts and finding w
 
 ## What's next for Hear.Me
 The next steps for our project include pitching the idea to government organizations such as the Government of Ontario (GO) and the TTC. We believe that our project can make a real impact on accessibility and inclusivity for deaf individuals on public transportation, and we want to explore opportunities to implement it on a larger scale. We will reach out to these organizations and present our project, highlighting its potential benefits and discussing potential implementation strategies. Additionally, we will continue to improve and refine the application based on feedback and testing. We will also explore other potential partnerships and collaborations that could help us to bring this innovative solution to more people. Overall, our goal is to bring our application to as many public transportation systems as possible, to empower marginalized communities, and break down barriers to inclusion.
+
+#### Built by Gerald, Amir, Jason, and Aakash for UofTHacks X
