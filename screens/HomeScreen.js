@@ -60,6 +60,9 @@ export default function HomeScreen({ route, navigation }) {
     );
     const interval = setInterval(() => {
       setCurrentStop((prevValue) => {
+        if (prevValue >= stopData[train].length) {
+          return 0;
+        }
         return prevValue + 1;
       });
     }, 5000);
